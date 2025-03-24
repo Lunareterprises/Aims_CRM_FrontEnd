@@ -1,0 +1,26 @@
+.card {
+    border-radius: 10px;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h5 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .custom-progress-bar {
+    height: 20px !important; /* Set the height of the progress bar */
+    border-radius: 10px; /* Optional: Adds rounded corners to the progress bar */
+  }
+  
+  .custom-progress-bar .progress-bar {
+    border-radius: 10px; /* Optional: Rounded corners for the progress inside the progress bar */
+  }
+
+  .leftborder{
+    border-right: 2px solid #938787 !important;
+  }
+  

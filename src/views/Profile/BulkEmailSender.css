@@ -1,0 +1,92 @@
+.bulk-email-sender {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    text-align: center;
+}
+
+.email-list-section {
+    margin-bottom: 20px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ulstyle li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+.hightadjust{
+    max-height: 200px;
+    /* min-height: 200px; */
+    overflow-y: auto;
+}
+.ulstyle li button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.ulstyle li button:hover {
+    background-color: #d32f2f;
+}
+
+.email-content-section input,
+.email-content-section textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    height: 100px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-buttons button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.action-buttons button:first-child {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.action-buttons button:first-child:hover {
+    background-color: #d32f2f;
+}
+
+.action-buttons button:last-child {
+    
+    background-color: #45a049;
+    color: white;
+}
+
+.action-buttons button:last-child:hover {
+   
+    background-color: #45a049;
+}

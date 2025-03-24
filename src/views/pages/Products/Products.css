@@ -1,0 +1,210 @@
+.paginationaldes {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  scrollbar-width: thin; /* For Firefox: Makes scrollbar thin */
+  scroll-behavior: smooth; /* Smooth scrolling for better UX */
+}
+
+.paginationaldes::-webkit-scrollbar {
+  height: 6px; /* Height of the horizontal scrollbar */
+}
+
+.paginationaldes::-webkit-scrollbar-thumb {
+  background-color: #888; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded edges for the scrollbar */
+}
+
+.paginationaldes::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Thumb color on hover */
+}
+
+.centree {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.btn-delete {
+  margin-top: 5px;
+  margin-left: 30px;
+  background-color: white !important;
+}
+
+.btn-deletelist {
+  background-color: white !important;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.btn-deleteview {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.debit {
+  color: red !important;
+}
+
+.credit {
+  color: rgb(118, 196, 34) !important;
+}
+/*  */
+
+.spacemanger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdownitem {
+  background-color: rgba(231, 247, 247, 0) !important;
+  color: blue;
+  width: 200px;
+}
+
+.btn.show {
+  color: rgb(3, 3, 16) !important;
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.5em;
+}
+
+.searchcolor {
+  background-color: white !important;
+  border: 1px solid blue !important;
+}
+
+
+.bgaditem{
+  background-color: transparent !important;
+  color: blue;
+
+}
+Table{
+  
+  white-space: nowrap;
+ 
+}
+.tablehead{
+ 
+  
+  text-align: center;
+}
+
+
+
+.banking-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.banking-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.banking-container p {
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.connect-button,
+.add-manually-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.connect-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.add-manually-button {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.skip-link {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.skip-link span {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.watch-video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #007bff;
+}
+
+.watch-video i {
+  font-size: 20px;
+}
+.spacemanger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.05) !important;
+}
+
+.account-table {
+width: 100%;
+text-align: left;
+}
+
+.account-table th {
+font-weight: bold;
+background-color: #f8f9fa;
+}
+
+.account-table td {
+padding: 12px;
+vertical-align: middle;
+}
+
+.account-table tr:hover {
+background-color: #f1f3f5;
+}
+
+.action-btn {
+border: none;
+background: none;
+font-size: 18px;
+color: #555;
+}
+
+.action-btn:hover {
+color: #007bff;
+}
+
+
+

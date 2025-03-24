@@ -1,0 +1,100 @@
+
+.datemain{
+   
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+.date{
+    width: 30%;
+    display: flex;
+    
+}
+
+.custom-table {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-header {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .table-header th {
+    padding: 16px;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .custom-table .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f4f7f9;
+  }
+  
+  .custom-table tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-table .table-header th,
+  .custom-table tbody td {
+    padding: 14px 12px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .custom-table .table-header th:first-child,
+  .custom-table tbody td:first-child {
+    border-top-left-radius: 8px;
+  }
+  
+  .custom-table .table-header th:last-child,
+  .custom-table tbody td:last-child {
+    border-top-right-radius: 8px;
+  }
+  
+  .custom-table .cbadge {
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  
+  .custom-table .cbutton {
+    padding: 6px 12px;
+    font-weight: bold;
+  }
+  
+  .cbutton-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  .cbutton-outline-primary:hover {
+    color: #fff;
+    background-color: #0d6efd;
+  }
+  
+  .cbutton-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .testred{
+    color: #ffffff !important;
+  }
+
+  .btn {
+    background-color:  #18095b !important;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    color: white !important;
+    font-size: 16px;
+    font-family: var(--fontFamily);
+    font-weight: 400;
+    cursor: pointer;
+  }

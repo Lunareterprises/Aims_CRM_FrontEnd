@@ -1,0 +1,49 @@
+
+  .imgstyle{
+    width: 100%;
+  }
+ 
+  
+  .imagecenter{
+    justify-content: center !important;
+    align-items: center !important; 
+    display: flex !important;
+
+  }
+  
+  .profile-icon {
+   
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    /* margin: 20px auto; */
+  }
+  
+  .modal-body h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .modal-body p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .show-me-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .explore-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,21 @@
+.sidebar {
+    min-height: 100vh;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar ul li.active {
+    font-weight: bold;
+}
+
+.table thead th {
+    background-color: #f1f1f1;
+}
+
+h1.h4 {
+    margin: 0;
+}

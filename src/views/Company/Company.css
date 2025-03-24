@@ -1,0 +1,79 @@
+.add-company {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    font-size: 15px; /* Adjust font size */
+    color: #333; /* Change text and icon color */
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+
+  .add-company__header{
+    background-color: rgb(136, 168, 197);
+padding: 4px;
+border-radius: 4px;
+
+  }
+  .add-company:hover {
+    color: #4e5b69; /* Change color on hover */
+  }
+  
+  .add-icon {
+    font-size: 15px; /* Adjust icon size */
+  }
+  
+  .add-text {
+    font-weight: 500; /* Adjust font weight */
+  }
+  
+
+  .paginationaldes {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scrollbar-width: thin; /* For Firefox: Makes scrollbar thin */
+    scroll-behavior: smooth; /* Smooth scrolling for better UX */
+  }
+  
+  .paginationaldes::-webkit-scrollbar {
+    height: 6px; /* Height of the horizontal scrollbar */
+  }
+  
+  .paginationaldes::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb color */
+    border-radius: 10px; /* Rounded edges for the scrollbar */
+  }
+  
+  .paginationaldes::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Thumb color on hover */
+  }
+  
+
+  .centree{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+
+ .btn-delete{
+  background-color: white !important;
+ }
+
+
+ .btn-deletelist{
+  background-color: white !important;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  
+ }
+.btn-deleteview{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+}

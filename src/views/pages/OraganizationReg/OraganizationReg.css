@@ -1,0 +1,31 @@
+.form-container {
+    display: flex;
+    height: 100vh;
+    background-image: url('../../../assets/images/tax_abstract_background.jpg'); /* Replace with your image URL */
+
+    /* background: linear-gradient(to right, #eb6666 60%, #1774d1 50%); */
+  }
+  .read-only-input {
+    background-color: #f0f0f0; /* Light grey background for read-only fields */
+    color: #333; /* Text color for read-only fields */
+    cursor: not-allowed; /* Change cursor to indicate read-only */
+    border-color: #ccc; /* Optional: Change border color */
+  }
+  
+
+
+  .formorg{
+    border-radius: 20px;
+  }
+  
+  .form-content {
+    flex: 1;
+  }
+  
+  .image-section {
+    /* flex: 1; */
+    background-image: url('../../../assets/images/tax_abstract_background.jpg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+  }
+  

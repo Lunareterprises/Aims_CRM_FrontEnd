@@ -1,0 +1,53 @@
+/* .bgstyle{
+    position: absolute !important;
+    z-index: 9999;
+
+} */
+
+.sidebar {
+    /* justify-content: end; */
+    display: flex;
+    border-right: 1px solid #ddd;
+    min-height: 100vh;
+}
+
+.sidebar .list-group-item {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sidebar .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.text-primary {
+    color: #007bff !important;
+}
+
+.d-flex.align-items-center {
+    display: flex;
+    align-items: center;
+}
+
+
+/* // ////////////////////////////////////////transcation/////////////////////////////////////////////////////// */
+
+.recent-transactions-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recent-transactions-card .dropdown-toggle {
+    text-decoration: none;
+  }
+  
+  .bi {
+    font-size: 1.5rem;
+  }
+  
+  .card-header {
+    background-color: white;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  

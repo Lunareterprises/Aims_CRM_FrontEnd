@@ -1,0 +1,177 @@
+
+/* body{
+	background-color: white;
+} */
+  .react-tel-input .form-control{
+    width: 100% !important;
+    height: 35px  !important;
+  }
+
+   .form-control {
+    /* min-height: 48px; */
+    line-height: 40px;
+    border-color: transparent;
+    background: rgba(163, 190, 241, 0.14);
+    border-radius: 10px;
+    color: var(--bs-body-color);
+}
+
+
+  
+
+  .react-tel-input  {
+    position: relative;
+    font-size: 14px;
+    letter-spacing: .01rem;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    /* padding-left: 48px; */
+    margin-left: 0;
+    background: #ffffff !important;
+    border: 1px solid #CACACA;
+    border-radius: 5px;
+    line-height: 25px;
+    height: 35px;
+    width: 100%;
+    outline: none;
+	color: #c90d0d !important;
+  }
+
+  .react-tel-input .flag-dropdown.open .selected-flag {
+    background: #fff;
+    border-radius: 3px 0 0 0;
+}
+
+.centree{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+  }
+
+  .btnreg{
+	background-color: #333b7b !important;
+	color: #fff !important;
+	padding: 10px  50px 10px 50px;
+	border: 2px solid #ffffff;
+  width: 100%;
+
+  }
+
+  .btneye{
+    background-color: #321c46d8 !important;
+    color: #fff !important;
+    height: 40px;
+    /* padding: 10px  50px 10px 50px; */
+    /* border: 2px solid #04cece;/ */
+  
+  
+    }
+
+
+  .login-cta {
+	text-align: center;
+	font-size: 16px;
+	color: #000000;
+	font-family: Arial, sans-serif;
+  }
+  
+  .login-cta p {
+	margin: 0;
+	line-height: 1.5;
+  }
+  
+  .login-link {
+	color: #007bff;
+	font-weight: 500;
+	cursor: pointer;
+	text-decoration: underline;
+	transition: color 0.3s ease;
+  }
+  
+  .login-link:hover {
+	color: #0056b3;
+	text-decoration: none;
+  }
+  
+
+
+
+
+  
+  
+  .welcome-heading {
+	font-size: 24px;
+	color: #361767;
+	margin-bottom: 10px;
+  }
+  
+  .sub-heading {
+	font-size: 16px;
+	color: #000000;
+	margin-bottom: 20px;
+  }
+  .colorstyle{
+    color: #54525586;
+  }
+
+  .custom-placeholder {
+    
+    background-color: rgb(240, 240, 255); /* Set the background color */
+    /* color: rgb(9, 9, 109); Optional: Set text color */
+    border: 1px solid rgb(200, 200, 200); /* Optional: Set border color */
+    padding: 0.5rem; /* Optional: Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add rounded corners */
+  }
+  
+  .custom-placeholder:focus {
+    background-color: rgb(220, 220, 255); /* Change background on focus */
+    border-color: rgb(100, 100, 255); /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+  }
+  
+  
+
+
+  
+
+.bg_imagecon {
+  /* background-color: #000000; */
+  justify-content: center;
+  align-items: center;
+  display: flex;
+ 
+}
+
+.bg_image{
+  width: 600px;
+  border-radius: 30px;
+  height: 700px;
+}
+.borderr{
+  border-radius: 10px;
+
+
+}
+.Change{
+  margin-left: 10px;
+  font-weight: 900;
+  color: #27ce0d;
+}
+
+.form-control {
+  height: 40px !important;
+}
+.bg-whitebg{
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .bg_image {
+ display: none;   background-image: none; /* Hide the background image */
+  }
+}
+
+ 
+  
+  
+  

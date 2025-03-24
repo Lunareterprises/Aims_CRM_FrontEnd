@@ -1,0 +1,78 @@
+.banking-container {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .banking-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .banking-container p {
+    color: #6c757d;
+    margin-bottom: 30px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .connect-button,
+  .add-manually-button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  
+  .connect-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .add-manually-button {
+    background-color: #e0e0e0;
+    color: black;
+  }
+  
+  .skip-link {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .skip-link span {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .watch-video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #007bff;
+  }
+  
+  .watch-video i {
+    font-size: 20px;
+  }
+  
+  td{
+  
+    text-transform: capitalize !important;
+  }
+
+
+  .imagescroll{
+
+    /* background-color: #007bff; */
+    height: 390px;
+    overflow-y: auto;
+  }

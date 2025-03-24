@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .table-light {
+    background-color: #f8f9fa;
+  }
+  
+  .dropdown-toggle {
+    min-width: 150px;
+  }
+  
+  button {
+    min-width: 120px;
+  }
+  
+  @media (max-width: 768px) {
+    .text-md-end {
+      text-align: left !important;
+    }
+  }
+  

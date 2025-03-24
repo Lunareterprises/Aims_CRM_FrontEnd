@@ -1,0 +1,251 @@
+
+.ezy__signin6 {
+	/* Bootstrap variables */
+	--bs-body-color: #333b7b;
+	--bs-body-bg: rgb(255, 255, 255);
+
+	/* Easy Frontend variables */
+	--ezy-theme-color: rgb(13, 110, 253);
+	--ezy-theme-color-rgb: 13, 110, 253;
+	--ezy-form-card-bg: #ffffff;
+	--ezy-form-card-shadow: none;
+
+	background-color: var(--bs-body-bg);
+	padding: 40px 0;
+	overflow: hidden;
+}
+
+.paddingform {
+	padding-top: 10px;
+}
+
+/* Gray Block Style */
+.gray .ezy__signin6,
+.ezy__signin6.gray {
+	/* Bootstrap variables */
+	--bs-body-bg: rgb(246, 246, 246);
+
+	/* Easy Frontend variables */
+	--ezy-form-card-bg: #f6f6f6;
+	--ezy-form-card-shadow: none;
+}
+
+/* Dark Gray Block Style */
+.dark-gray .ezy__signin6,
+.ezy__signin6.dark-gray {
+	/* Bootstrap variables */
+	--bs-body-color: #ffffff;
+	--bs-body-bg: rgb(30, 39, 53);
+	--bs-dark-rgb: 255, 255, 255;
+
+	/* Easy Frontend variables */
+	--ezy-form-card-bg: #253140;
+	--ezy-form-card-shadow: none;
+}
+
+/* Dark Block Style */
+.dark .ezy__signin6,
+.ezy__signin6.dark {
+	/* Bootstrap variables */
+	--bs-body-color: #ffffff;
+	--bs-body-bg: rgb(11, 23, 39);
+	--bs-dark-rgb: 255, 255, 255;
+
+	/* Easy Frontend variables */
+	--ezy-form-card-bg: #162231;
+	--ezy-form-card-shadow: none;
+}
+
+.ezy__signin6 .container {
+	min-height: 100vh;
+}
+
+.ezy__signin6-heading {
+	font-weight: bold;
+	font-size: 25px;
+	line-height: 25px;
+	color: var(--bs-body-color);
+}
+
+.ezy__signin6-bg-holder {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 150px;
+	width: 100%;
+	border-radius: 25px;
+}
+
+.ezy__signin6-form-card {
+	background-color: transparent;
+	border: none;
+	box-shadow: var(--ezy-form-card-shadow);
+	border-radius: 15px;
+}
+
+.ezy__signin6-form-card * {
+	color: var(--bs-body-color);
+}
+
+.ezy__signin6 .form-control {
+	min-height: 48px;
+	line-height: 40px;
+	border-color: transparent;
+	background: rgba(163, 190, 241, 0.14);
+	border-radius: 10px;
+	color: var(--bs-body-color);
+}
+
+.ezy__signin6 .form-control:focus {
+	border-color: var(--ezy-theme-color);
+	box-shadow: none;
+}
+
+.ezy__signin6-btn-submit {
+	padding: 12px 30px;
+	background-color: #333b7b;
+	color: #ffffff;
+}
+
+.ezy__signin6-btn-submit:hover {
+	color: #ffffff;
+	background-color: #333b7b;
+
+}
+
+.ezy__signin6-btn {
+	padding: 12px 30px;
+}
+
+.ezy__signin6-btn,
+.ezy__signin6-btn * {
+	color: #ffffff;
+}
+
+.ezy__signin6-btn:hover {
+	color: #ffffff;
+}
+
+.ezy__signin6-or-separator {
+	position: relative;
+}
+
+.ezy__signin6-or-separator hr {
+	border-color: var(--bs-body-color);
+	opacity: 0.15;
+}
+
+.ezy__signin6-or-separator span {
+	background-color: var(--ezy-form-card-bg);
+	color: var(--bs-body-color);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+	opacity: 0.8;
+}
+
+.custom-placeholder::placeholder {
+	color: rgb(250, 250, 250) !important; /* Set the placeholder color */
+	opacity: 1;  /* Ensure full opacity */
+  }
+  
+  .custom-placeholder:-ms-input-placeholder {
+	color: rgb(254, 254, 254) !important; /* For Internet Explorer */
+  }
+  
+  .custom-placeholder::-ms-input-placeholder {
+	color: rgb(255, 255, 255) !important; /* For Edge */
+  }
+  .custom-placeholder::placeholder {
+	color: rgb(255, 255, 255) !important; /* Set the placeholder color */
+	opacity: 1;  /* Ensure full opacity */
+  }
+
+  .custom-placeholder {
+	background-color: rgb(240, 240, 255); /* Set the background color */
+	color: rgb(9, 9, 109); /* Optional: Set text color */
+	border: 1px solid rgb(200, 200, 200); /* Optional: Set border color */
+	padding: 0.5rem; /* Optional: Add padding for better appearance */
+	border-radius: 5px; /* Optional: Add rounded corners */
+	outline: none !important; 
+  }
+  
+  .custom-placeholder:focus {
+	background-color: rgb(220, 220, 255); /* Change background on focus */
+	border-color: rgb(100, 100, 255); /* Highlight border on focus */
+	outline: none; /* Remove default outline */
+  }
+  
+  /* //---------------- */
+
+
+  .carousel-container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+  }
+  
+  .carousel-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+  }
+  
+  .carousel-item {
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+  }
+  
+  .carousel-indicators {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 10px;
+	z-index: 10;
+  }
+  
+  .carousel-indicators button {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.5);
+	border: none;
+	cursor: pointer;
+  }
+  
+  .carousel-indicators button.active {
+	background-color: white;
+  }
+  
+  .carousel-control-prev, .carousel-control-next {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(0, 0, 0, 0.3);
+	border: none;
+	color: white;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 10;
+  }
+  
+  .carousel-control-prev {
+	left: 20px;
+  }
+  
+  .carousel-control-next {
+	right: 20px;
+  }
+  .radicus{
+	border-radius: 40px;
+	margin-top: 100px;
+  }
