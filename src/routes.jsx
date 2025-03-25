@@ -131,6 +131,8 @@ const AddProjects = React.lazy(() => import('./views/pages/TimeTracking/AddProje
 
 const Timesheet = React.lazy(() => import('./views/pages/TimeTracking/Timesheet'))
 const Report = React.lazy(() => import('./views/pages/Report/Report'))
+const ManualJournals = React.lazy(() => import('./views/pages/ManualJournals/ManualJournals'))
+const AddNewManualJournals = React.lazy(() => import('./views/pages/ManualJournals/AddNewManualJournals'))
 const Accountants = React.lazy(() => import('./views/pages/Accountants/Accountants'))
 
 const Createinvoice = React.lazy(() => import('./components/Invoicecomponent/InvoiceForm'))
@@ -413,7 +415,18 @@ const routes = [
   },
 
   // -----Accountants------
-
+  {
+    path: '/dashboard/ManualJournals',
+    name: t('ManualJournals'),
+    element: ManualJournals,
+    exact: true,
+  },
+  {
+    path: '/dashboard/AddNewManualJournals',
+    name: t('AddNewManualJournals'),
+    element: AddNewManualJournals,
+    exact: true,
+  },
   {
     path: '/dashboard/Accountants',
     name: t('Accountants'),

@@ -1,0 +1,56 @@
+.custom-btn {
+    background-color: white !important;
+    color: #212631 !important;
+    outline: none;
+    border: none; 
+}
+
+.submit_custom_btn{
+    background-color: #0021f7 !important;
+    color: white !important;
+    outline: none;
+    border: none;
+}
+
+
+ .cancel_custom_btn{
+    background-color: rgb(150, 5, 5) !important;
+    color: white !important;
+    outline: none;
+    border: none;
+ }
+
+.custom-btn:focus, .submit_custom_btn {
+    outline: none; 
+}
+
+.custom-btn:hover, .submit_custom_btn {
+    outline: none;
+}
+
+.ViewsBy_dropdown {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important; 
+  appearance: none; 
+  padding-right: 20px; 
+ 
+}
+
+
+.table tfoot, 
+.table tfoot tr, 
+.table tfoot td {
+    border: none !important;
+    background-color: transparent !important;
+    text-align: end;
+}
+
+.sticky-footer {
+    position: sticky;
+    bottom: 0;
+    background: white; /* Ensures it's visible */
+    padding: 10px;
+    z-index: 10; /* Ensures it stays above other content */
+  }
+  

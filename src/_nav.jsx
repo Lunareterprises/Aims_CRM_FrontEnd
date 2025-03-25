@@ -199,6 +199,11 @@ const _nav = [
     // to: '/buttons',
     icon: <FontAwesomeIcon icon={faReceipt}  className="nav-icon" />,
     items: [
+      {
+        component: CNavItem,
+        name: 'Manual Journals',
+        to: '/dashboard/ManualJournals',
+      },
      
       {
         component: CNavItem,
