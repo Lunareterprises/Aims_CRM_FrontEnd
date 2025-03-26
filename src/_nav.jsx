@@ -210,6 +210,11 @@ const _nav = [
         name: 'Chart of Accounts',
         to: '/dashboard/Accountants',
       },
+      {
+        component: CNavItem,
+        name: 'Currency Adjestment',
+        to: '/dashboard/CurrencyAdjestment',
+      },
      
     ],
   },

@@ -132,6 +132,7 @@ const AddProjects = React.lazy(() => import('./views/pages/TimeTracking/AddProje
 const Timesheet = React.lazy(() => import('./views/pages/TimeTracking/Timesheet'))
 const Report = React.lazy(() => import('./views/pages/Report/Report'))
 const ManualJournals = React.lazy(() => import('./views/pages/ManualJournals/ManualJournals'))
+const CurrencyAdjestment = React.lazy(() => import('./views/pages/CurrencyAdjestment/CurrencyAdjestmentIndex'))
 const AddNewManualJournals = React.lazy(() => import('./views/pages/ManualJournals/AddNewManualJournals'))
 const Accountants = React.lazy(() => import('./views/pages/Accountants/Accountants'))
 
@@ -433,7 +434,12 @@ const routes = [
     element: Accountants,
     exact: true,
   },
-
+  {
+    path: '/dashboard/CurrencyAdjestment',
+    name: t('CurrencyAdjestment'),
+    element: CurrencyAdjestment,
+    exact: true,
+  },
   {
     path: '/dashboard/Profile/Language',
     name: t('Language'),
