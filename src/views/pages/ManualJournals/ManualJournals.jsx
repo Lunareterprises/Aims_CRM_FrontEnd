@@ -48,7 +48,7 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {
   };
 
   const handleShowModal = (account) => {
-    setSelectedNote(account);  // Pass the entire account object
+    setSelectedNote(account);  
     setShowModal(true);
   };
 

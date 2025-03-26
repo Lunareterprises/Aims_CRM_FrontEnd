@@ -23,17 +23,21 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
   const handleDownloadPDF = () => {
     const modalContent = modalRef.current;
     if (!modalContent) return alert("No content to download.");
-
-    html2canvas(modalContent, { scale: 2 }).then((canvas) => {
+  
+    html2canvas(modalContent, {
+      scale: 2,
+      ignoreElements: (element) => element.classList.contains("no-print"),
+    }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const imgWidth = 210;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+  
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
       pdf.save("journal-details.pdf");
     });
   };
+  
 
   const handleEdit = () => {
     navigate("/dashboard/AddNewManualJournals", {
@@ -50,18 +54,27 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
       <Modal.Body className="modal-body-custom" ref={modalRef}>
         {selectedNote && (
           <div id="printableArea">
-            <h4 className="journal-title">JOURNAL {selectedNote.code}</h4>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="journal-title">JOURNAL {selectedNote.code}</h4>
+              <div className="d-flex gap-4 no-print" style={{ fontSize: "15px" }}>
+                <FaEdit className="icon-btn text-secondary" style={{ fontSize: "16px" }} onClick={handleEdit} />
+                <FaPrint className="icon-btn text-danger" onClick={handlePrint} />
+                <FaFilePdf className="icon-btn text-primary" onClick={handleDownloadPDF} />
+              </div>
+            </div>
 
+
+            <br />
             <div className="journal-info">
               <p><strong>Notes:</strong> {selectedNote.notes}</p>
               <p><strong>Date:</strong> {selectedNote.date}</p>
-              <p><strong>Amount:</strong> ₹{selectedNote.amount}</p>
+              <p><strong>Amount:</strong> {selectedNote.amount}</p>
               <p><strong>Reference Number:</strong> {selectedNote.reference}</p>
             </div>
 
             <Table bordered className="journal-table">
               <thead>
-                <tr className="bg-[#212631] text-white">
+                <tr>
                   <th>Account</th>
                   <th>Contact</th>
                   <th>Debits</th>
@@ -102,15 +115,6 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
       </Modal.Body>
 
       <Modal.Footer className="modal-footer-custom">
-        <Button variant="primary" className="icon-btn" onClick={handleEdit}>
-          <FaEdit /> Edit
-        </Button>
-        <Button variant="success" className="icon-btn" onClick={handlePrint}>
-          <FaPrint /> Print
-        </Button>
-        <Button variant="danger" className="icon-btn" onClick={handleDownloadPDF}>
-          <FaFilePdf /> PDF
-        </Button>
         <Button variant="secondary" onClick={() => setShowModal(false)}>
           Close
         </Button>
