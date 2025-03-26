@@ -3,14 +3,19 @@ import { Container, Form, Row, Col, Button, Table, Dropdown } from "react-bootst
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import "./ManualJournalCSS.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function AddNewManualJournals() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const isEditing = state?.isEditing || false;
+  const journalData = state?.journalData || null;
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm();
   const [totals, setTotals] = useState({ subtotalDebit: 0, subtotalCredit: 0, totalDebit: 0, totalCredit: 0, difference: 0 });
 
@@ -68,6 +73,9 @@ function AddNewManualJournals() {
     setError(""); // Clear previous errors
     setFiles(newFiles);
   };
+
+
+  
 
   // Fetch Accounts from API
   useEffect(() => {
@@ -132,19 +140,27 @@ function AddNewManualJournals() {
     setRows((prevRows) => prevRows.filter((_, i) => i !== index));
   };
 
-  // Handle form submission
+  useEffect(() => {
+    if (isEditing && journalData) {
+      // Prefill the form with journalData
+      Object.keys(journalData).forEach((key) => {
+        setValue(key, journalData[key]);
+      });
+      setIsRecurring(journalData.isRecurring || false);
+      setRows(journalData.rows || []);
+    }
+  }, [isEditing, journalData, setValue]);
+
   const onSubmit = (data) => {
     console.log("Form Data:", data, "Table Rows:", rows);
   };
 
+
   return (
         <Container>
-          {!isRecurring ? (
-            <h3 className="my-4">New  Journal</h3>
-          )
-            :(
-            <h3 className="my-4">New Recurring Journal</h3>
-          )}
+          <h3 className="my-4">
+        {isEditing ? "Edit Journal" : isRecurring ? "New Recurring Journal" : "New Journal"}
+      </h3>
           <Form onSubmit={handleSubmit(onSubmit)} >
 
                   {/* Date & Journal# */}
@@ -392,9 +408,9 @@ function AddNewManualJournals() {
               <tr>
                 <td ></td>
                 <td ></td>
-                <td >Total (₹):</td>
-                <td >₹{totals.totalDebit.toFixed(2)}</td>
-                <td > ₹{totals.totalCredit.toFixed(2)}</td>
+                <td className=' fs-5'>Total (₹):</td>
+                <td className=' fs-5'>₹{totals.totalDebit.toFixed(2)}</td>
+                <td className=' fs-5'> ₹{totals.totalCredit.toFixed(2)}</td>
                 
               </tr>
               <tr>
@@ -453,7 +469,9 @@ function AddNewManualJournals() {
                   <Col className="d-flex gap-2">
                     {!isRecurring ? (
                       <>
-                        <Button type="submit" className="btn-primary">Save & Publish</Button>
+                        <Button type="submit" className="mt-3">{isEditing ? "Update Journal" : "Save & Publish"}</Button>
+
+                        {/* <Button type="submit" className="btn-primary">Save & Publish</Button> */}
                         <Button type="submit"  className="btn-primary">Save as Draft</Button>
                         <Button className="cancel_custom_btn" onClick={() => navigate("/dashboard/ManualJournals")}>
                           Cancel
