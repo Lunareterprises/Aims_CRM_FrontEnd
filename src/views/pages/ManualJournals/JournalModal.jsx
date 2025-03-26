@@ -1,50 +1,45 @@
 import React, { useRef } from "react";
 import { Modal, Table, Button } from "react-bootstrap";
-import { FaFilePdf, FaPrint, FaDownload, FaEdit } from "react-icons/fa";
+import { FaFilePdf, FaPrint, FaEdit } from "react-icons/fa";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import "./ManualJournalCSS.css";
 import { useNavigate } from "react-router-dom";
+import "./ManualJournalCSS.css";
 
 const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
-  const modalRef = useRef(null); // Reference to modal content
+  const modalRef = useRef(null);
   const navigate = useNavigate();
-  // Function to Print the Modal Content Only
+
   const handlePrint = () => {
     const printContent = modalRef.current.innerHTML;
     const originalContent = document.body.innerHTML;
     
-    document.body.innerHTML = printContent; // Replace entire page content with modal content
+    document.body.innerHTML = printContent;
     window.print();
-    document.body.innerHTML = originalContent; // Restore original content
-    window.location.reload(); // Reload to reset page
+    document.body.innerHTML = originalContent;
+    window.location.reload();
   };
 
-  // Function to Download Modal Content as PDF
   const handleDownloadPDF = () => {
     const modalContent = modalRef.current;
-  
-    if (!modalContent) {
-      alert("No content to download.");
-      return;
-    }
-  
+    if (!modalContent) return alert("No content to download.");
+
     html2canvas(modalContent, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
-  
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
       pdf.save("journal-details.pdf");
     });
   };
-  
-  const handleEdit = () => {
-    navigate("/dashboard/AddNewManualJournals", { state: { journalData: selectedNote, isEditing: true } });
-  };
 
+  const handleEdit = () => {
+    navigate("/dashboard/AddNewManualJournals", {
+      state: { journalData: selectedNote, isEditing: true },
+    });
+  };
 
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
@@ -66,7 +61,7 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
 
             <Table bordered className="journal-table">
               <thead>
-                <tr>
+                <tr className="bg-[#212631] text-white">
                   <th>Account</th>
                   <th>Contact</th>
                   <th>Debits</th>
@@ -74,7 +69,7 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
                 </tr>
               </thead>
               <tbody>
-                {selectedNote?.entries && selectedNote.entries.length > 0 ? (
+                {selectedNote?.entries?.length > 0 ? (
                   selectedNote.entries.map((entry, index) => (
                     <tr key={index}>
                       <td>{entry.account || "-"}</td>
@@ -107,13 +102,13 @@ const JournalModal = ({ showModal, setShowModal, selectedNote }) => {
       </Modal.Body>
 
       <Modal.Footer className="modal-footer-custom">
-        <Button variant="light" className="icon-btn" onClick={handleEdit}>
+        <Button variant="primary" className="icon-btn" onClick={handleEdit}>
           <FaEdit /> Edit
         </Button>
-        <Button variant="light" className="icon-btn" onClick={handlePrint}>
+        <Button variant="success" className="icon-btn" onClick={handlePrint}>
           <FaPrint /> Print
         </Button>
-        <Button variant="light" className="icon-btn" onClick={handleDownloadPDF}>
+        <Button variant="danger" className="icon-btn" onClick={handleDownloadPDF}>
           <FaFilePdf /> PDF
         </Button>
         <Button variant="secondary" onClick={() => setShowModal(false)}>

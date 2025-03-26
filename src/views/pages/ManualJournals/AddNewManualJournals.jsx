@@ -469,7 +469,7 @@ function AddNewManualJournals() {
                   <Col className="d-flex gap-2">
                     {!isRecurring ? (
                       <>
-                        <Button type="submit" className="mt-3">{isEditing ? "Update Journal" : "Save & Publish"}</Button>
+                        <Button type="submit" className="btn-primary">{isEditing ? "Update Journal" : "Save & Publish"}</Button>
 
                         {/* <Button type="submit" className="btn-primary">Save & Publish</Button> */}
                         <Button type="submit"  className="btn-primary">Save as Draft</Button>
