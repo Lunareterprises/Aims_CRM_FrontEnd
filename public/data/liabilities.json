@@ -1,0 +1,19 @@
+{
+    "Liabilities": {
+      "Current Liabilities": [
+        "Accounts Payable",
+        "Employee Reimbursements",
+        "GEETHA KUMARI",
+        "Opening Balance Adjustments",
+        "Tax Payable",
+        "TDS Payable",
+        "Unearned Revenue"
+      ],
+      "Long Term Liabilities": [
+        "Construction Loans",
+        "Mortgages"
+      ],
+      "Other Liabilities": []
+    }
+  }
+  

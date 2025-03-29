@@ -1,0 +1,23 @@
+[
+    {
+      "Current Assets": {
+        "Cash": ["Petty Cash", "Undeposited Funds"],
+        "Bank": ["Bank A", "Bank B", "Bank C"],
+        "Accounts Receivable": ["Accounts Receivable"]
+      }
+    },
+    {
+      "Other Assets": [
+        "Advance Tax",
+        "Employee Advance",
+        "Inventory Asset",
+        "Prepaid Expenses",
+        "Sales to Customers (Cash)",
+        "TDS Receivable"
+      ]
+    },
+    {
+      "Fixed Assets": ["Furniture and Equipment"]
+    }
+  ]
+  

@@ -1,34 +1,32 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form, Spinner, Alert } from "react-bootstrap";
 
 function AssetAccountModal({ show, handleClose, onUpdate }) {
-  const [localSelected, setLocalSelected] = useState([]);
+  const [assetsAccounts, setAssetsAccounts] = useState([]);
+  const [localSelected, setLocalSelected] = useState(new Set());
   const [expandedCategories, setExpandedCategories] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const AssetsAccounts = [
-    {
-      "Current Assets": {
-        "Cash": ["Petty Cash", "Undeposited Funds"],
-        "Bank": ["k,kre.", "lunar", "lunar2", "rahil", "tth", "wadawd"],
-        "Accounts Receivable": ["Accounts Receivable"]
+  // Fetch asset accounts from a JSON file
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data/assetsAccounts.json"); // Adjust the path
+        if (!response.ok) throw new Error("Failed to fetch asset accounts");
+        const data = await response.json();
+        setAssetsAccounts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    },
-    {
-      "Other Assets": [
-        "Advance Tax",
-        "Employee Advance",
-        "Inventory Asset",
-        "Prepaid Expenses",
-        "Sales to Customers (Cash)",
-        "TDS Receivable"
-      ]
-    },
-    {
-      "Fixed Assets": ["Furniture and Equipment"]
-    }
-  ];
+    };
+    fetchData();
+  }, []);
 
+  // Toggle category expansion
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
       ...prev,
@@ -36,18 +34,33 @@ function AssetAccountModal({ show, handleClose, onUpdate }) {
     }));
   };
 
+  // Toggle individual account selection
   const toggleAccountSelection = (account) => {
-    setLocalSelected((prev) =>
-      prev.includes(account)
-        ? prev.filter((item) => item !== account)
-        : [...prev, account]
-    );
+    setLocalSelected((prev) => {
+      const newSelected = new Set(prev);
+      newSelected.has(account) ? newSelected.delete(account) : newSelected.add(account);
+      return newSelected;
+    });
   };
 
-  const filterAccounts = (accounts) => {
-    return accounts.filter((account) =>
-      account.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // Filter accounts based on search term
+  const filterAccounts = (accounts) =>
+    accounts.filter((account) => account.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // Handle "Select All" and "Unselect All" for a group
+  const handleSelectAll = (accounts) => {
+    const filteredAccounts = filterAccounts(accounts);
+    const allSelected = filteredAccounts.every((acc) => localSelected.has(acc));
+
+    setLocalSelected((prev) => {
+      const newSelected = new Set(prev);
+      if (allSelected) {
+        filteredAccounts.forEach((acc) => newSelected.delete(acc)); // Unselect all
+      } else {
+        filteredAccounts.forEach((acc) => newSelected.add(acc)); // Select all
+      }
+      return newSelected;
+    });
   };
 
   return (
@@ -56,6 +69,7 @@ function AssetAccountModal({ show, handleClose, onUpdate }) {
         <Modal.Title>Select Asset Account</Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-5">
+        {/* Search Bar */}
         <Form.Control
           type="text"
           placeholder="Search Accounts..."
@@ -64,70 +78,122 @@ function AssetAccountModal({ show, handleClose, onUpdate }) {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <div className="text-primary fs-5 mb-2">Asset Accounts</div>
-        <div className="ms-3">
-          {AssetsAccounts.map((categoryObj, index) => {
-            const category = Object.keys(categoryObj)[0];
-            const accounts = categoryObj[category];
+        {loading ? (
+          <div className="text-center my-3">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        ) : error ? (
+          <Alert variant="danger">{error}</Alert>
+        ) : (
+          <div>
+            <div className="text-primary fs-5 mb-2">Asset Accounts</div>
+            <div className="ms-3">
+              {assetsAccounts.map((categoryObj, index) => {
+                const category = Object.keys(categoryObj)[0];
+                const accounts = categoryObj[category];
+                const filteredAccounts = Array.isArray(accounts) ? filterAccounts(accounts) : [];
 
-            return (
-              <div key={index}>
-                <div
-                  className="d-flex align-items-center text-primary gap-2 fs-6"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => toggleCategory(category)}
-                >
-                  {expandedCategories[category] ? "-" : "+"} {category}
-                </div>
+                return (
+                  <div key={index}>
+                    {/* Category Title with Expand/Collapse */}
+                    <div
+                      className="d-flex align-items-center text-primary gap-2 fs-6"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => toggleCategory(category)}
+                    >
+                      {expandedCategories[category] ? "-" : "+"} {category}
+                    </div>
 
-                {expandedCategories[category] && (
-                  <div className="ms-4">
-                    {typeof accounts === "object" && !Array.isArray(accounts)
-                      ? Object.entries(accounts).map(([subCategory, subAccounts], subIndex) => (
-                          <div key={`${index}-${subIndex}`} className="ms-3">
-                            <div
-                              className="text-secondary fs-6"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => toggleCategory(subCategory)}
-                            >
-                              {expandedCategories[subCategory] ? "-" : "+"} {subCategory}
-                            </div>
-
-                            {expandedCategories[subCategory] && (
-                              <div className="ms-4">
-                                {filterAccounts(subAccounts).map((account, idx) => (
-                                  <Form.Check
-                                    className="ms-3 mb-2"
-                                    key={idx}
-                                    type="checkbox"
-                                    label={account}
-                                    checked={localSelected.includes(account)}
-                                    onChange={() => toggleAccountSelection(account)}
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))
-                      : filterAccounts(accounts).map((account, idx) => (
+                    {expandedCategories[category] && (
+                      <div className="ms-4">
+                        {/* Select All Checkbox for Category */}
+                        {filteredAccounts.length > 0 && (
                           <Form.Check
-                            className="ms-3 mb-2"
-                            key={idx}
+                            className="mb-2"
                             type="checkbox"
-                            label={account}
-                            checked={localSelected.includes(account)}
-                            onChange={() => toggleAccountSelection(account)}
+                            label="Select All"
+                            checked={filteredAccounts.every((acc) => localSelected.has(acc))}
+                            ref={(input) => {
+                              if (input)
+                                input.indeterminate =
+                                  filteredAccounts.some((acc) => localSelected.has(acc)) &&
+                                  !filteredAccounts.every((acc) => localSelected.has(acc));
+                            }}
+                            onChange={() => handleSelectAll(accounts)}
                           />
-                        ))}
+                        )}
+
+                        {/* Handle Nested Subcategories */}
+                        {typeof accounts === "object" && !Array.isArray(accounts)
+                          ? Object.entries(accounts).map(([subCategory, subAccounts], subIndex) => {
+                              const filteredSubAccounts = filterAccounts(subAccounts);
+                              return (
+                                <div key={`${index}-${subIndex}`} className="ms-3">
+                                  {/* Subcategory Title with Expand/Collapse */}
+                                  <div
+                                    className="text-secondary fs-6"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => toggleCategory(subCategory)}
+                                  >
+                                    {expandedCategories[subCategory] ? "-" : "+"} {subCategory}
+                                  </div>
+
+                                  {expandedCategories[subCategory] && (
+                                    <div className="ms-4">
+                                      {/* Select All Checkbox for Subcategory */}
+                                      {filteredSubAccounts.length > 0 && (
+                                        <Form.Check
+                                          className="mb-2"
+                                          type="checkbox"
+                                          label="Select All"
+                                          checked={filteredSubAccounts.every((acc) => localSelected.has(acc))}
+                                          ref={(input) => {
+                                            if (input)
+                                              input.indeterminate =
+                                                filteredSubAccounts.some((acc) => localSelected.has(acc)) &&
+                                                !filteredSubAccounts.every((acc) => localSelected.has(acc));
+                                          }}
+                                          onChange={() => handleSelectAll(subAccounts)}
+                                        />
+                                      )}
+
+                                      {/* List Accounts */}
+                                      {filteredSubAccounts.map((account, idx) => (
+                                        <Form.Check
+                                          className="ms-3 mb-2"
+                                          key={idx}
+                                          type="checkbox"
+                                          label={account}
+                                          checked={localSelected.has(account)}
+                                          onChange={() => toggleAccountSelection(account)}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })
+                          : filteredAccounts.map((account, idx) => (
+                              <Form.Check
+                                className="ms-3 mb-2"
+                                key={idx}
+                                type="checkbox"
+                                label={account}
+                                checked={localSelected.has(account)}
+                                onChange={() => toggleAccountSelection(account)}
+                              />
+                            ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={() => onUpdate(localSelected)}>
+        <Button variant="primary" onClick={() => onUpdate(Array.from(localSelected))} disabled={loading || error}>
           Update
         </Button>
         <Button variant="secondary" onClick={handleClose}>

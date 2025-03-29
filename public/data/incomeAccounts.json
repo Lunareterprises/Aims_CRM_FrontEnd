@@ -1,0 +1,13 @@
+{
+    "accounts": [
+      "Discount",
+      "General Income",
+      "Interest Income",
+      "Late Fee Income",
+      "Other Charges",
+      "Sales",
+      "Service Income",
+      "Shipping Charge"
+    ]
+  }
+  

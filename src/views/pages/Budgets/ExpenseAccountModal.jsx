@@ -1,42 +1,31 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect, useMemo } from "react";
+import { Modal, Button, Form, Spinner, Alert } from "react-bootstrap";
 
 function ExpenseAccountModal({ show, handleClose, onUpdate }) {
+  const [expenseAccounts, setExpenseAccounts] = useState([]);
   const [localSelected, setLocalSelected] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const expenseAccounts = [
-    {
-      "Cost Of Goods Sold": [
-        "Cost of Goods Sold",
-        "Job Costing",
-        "Labor",
-        "Materials",
-        "Subcontractor",
-        "Tea",
-      ],
-    },
-    {
-      "Expense": [
-        { name: "Advertising and Marketing" },
-        "Automobile Expense",
-        "Bad Debt",
-        "Bank Fees and Charges",
-        "Consultant Expense",
-        "Depreciation Expense",
-        "IT and Internet Expenses",
-        "Meals and Entertainment",
-        "Office Supplies",
-        "Rent Expense",
-        "Salaries and Employee Wages",
-        "Travel Expense",
-      ],
-    },
-    {
-      "Other Expense": ["Exchange Gain or Loss"],
-    },
-  ];
+  // Fetch expense accounts from a JSON file
+  useEffect(() => {
+    const fetchExpenseAccounts = async () => {
+      try {
+        const response = await fetch("/data/expenseAccounts.json"); // Update with correct path
+        if (!response.ok) throw new Error("Failed to fetch data");
+        const data = await response.json();
+        setExpenseAccounts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpenseAccounts();
+  }, []);
 
   // Toggle category visibility
   const toggleCategory = (category) => {
@@ -57,42 +46,34 @@ function ExpenseAccountModal({ show, handleClose, onUpdate }) {
 
   // Select/Unselect all items in a category
   const toggleSelectAll = (category, accounts) => {
-    const allSelected = accounts.every((account) => {
-      const accountName = typeof account === "object" ? account.name : account;
-      return localSelected.includes(accountName);
-    });
+    const allSelected = accounts.every((account) =>
+      localSelected.includes(typeof account === "object" ? account.name : account)
+    );
 
-    if (allSelected) {
-      // Unselect all
-      setLocalSelected((prev) =>
-        prev.filter(
-          (item) =>
-            !accounts.some(
-              (account) =>
-                (typeof account === "object" ? account.name : account) === item
-            )
-        )
-      );
-    } else {
-      // Select all
-      setLocalSelected((prev) => [
-        ...prev,
-        ...accounts
-          .map((account) =>
-            typeof account === "object" ? account.name : account
+    setLocalSelected((prev) =>
+      allSelected
+        ? prev.filter(
+            (item) => !accounts.some((account) => (typeof account === "object" ? account.name : account) === item)
           )
-          .filter((account) => !prev.includes(account)), // Avoid duplicates
-      ]);
-    }
+        : [...prev, ...accounts.map((account) => (typeof account === "object" ? account.name : account))]
+    );
   };
 
-  // Filter accounts based on search term
-  const filterAccounts = (accounts) => {
-    return accounts.filter((account) => {
-      const accountName = typeof account === "object" ? account.name : account;
-      return accountName.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  };
+  // Filtered accounts using useMemo for optimization
+  const filteredExpenseAccounts = useMemo(() => {
+    if (!searchTerm) return expenseAccounts;
+    return expenseAccounts
+      .map((categoryObj) => {
+        const category = Object.keys(categoryObj)[0];
+        const accounts = categoryObj[category].filter((account) => {
+          const accountName = typeof account === "object" ? account.name : account;
+          return accountName.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        return accounts.length > 0 ? { [category]: accounts } : null;
+      })
+      .filter(Boolean);
+  }, [searchTerm, expenseAccounts]);
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
@@ -100,81 +81,91 @@ function ExpenseAccountModal({ show, handleClose, onUpdate }) {
         <Modal.Title>Select Expense Account</Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-5">
-        {/* Search Bar */}
-        <Form.Control
-          type="text"
-          placeholder="Search Accounts..."
-          className="mb-3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        {/* Error Message */}
+        {error && <Alert variant="danger">{error}</Alert>}
 
-        {/* Expense Accounts Section */}
-        <div className="text-primary fs-5 mb-2">Expense Accounts</div>
-        <div className="ms-3">
-          {expenseAccounts.map((categoryObj, index) => {
-            const category = Object.keys(categoryObj)[0];
-            const accounts = filterAccounts(categoryObj[category]);
+        {/* Loading State */}
+        {loading ? (
+          <div className="text-center my-3">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        ) : (
+          <>
+            {/* Search Bar */}
+            <Form.Control
+              type="text"
+              placeholder="Search Accounts..."
+              className="mb-3"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-            if (accounts.length === 0) return null;
+            {/* Expense Accounts Section */}
+            <div className="text-primary fs-5 mb-2">Expense Accounts</div>
+            <div className="ms-3">
+              {filteredExpenseAccounts.length > 0 ? (
+                filteredExpenseAccounts.map((categoryObj, index) => {
+                  const category = Object.keys(categoryObj)[0];
+                  const accounts = categoryObj[category];
 
-            const allSelected = accounts.every((account) =>
-              localSelected.includes(
-                typeof account === "object" ? account.name : account
-              )
-            );
+                  const allSelected = accounts.every((account) =>
+                    localSelected.includes(typeof account === "object" ? account.name : account)
+                  );
 
-            return (
-              <div key={index}>
-                {/* Category Title with Select All / Unselect All */}
-                <div
-                  className="d-flex align-items-center text-primary gap-2 fs-6"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => toggleCategory(category)}
-                >
-                  {expandedCategories[category] ? "-" : "+"} {category}
-                </div>
+                  return (
+                    <div key={index}>
+                      {/* Category Title */}
+                      <div
+                        className="d-flex align-items-center text-primary gap-2 fs-6"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => toggleCategory(category)}
+                      >
+                        {expandedCategories[category] ? "-" : "+"} {category}
+                      </div>
 
-                {/* Select/Unselect All Button */}
-                {expandedCategories[category] && (
-                  <div className="ms-4 mb-2">
-                    <Form.Check
-                      type="checkbox"
-                      label={allSelected ? "Unselect All" : "Select All"}
-                      checked={allSelected}
-                      onChange={() => toggleSelectAll(category, accounts)}
-                    />
-                  </div>
-                )}
+                      {/* Select/Unselect All */}
+                      {expandedCategories[category] && (
+                        <div className="ms-4 mb-2">
+                          <Form.Check
+                            type="checkbox"
+                            label={allSelected ? "Unselect All" : "Select All"}
+                            checked={allSelected}
+                            onChange={() => toggleSelectAll(category, accounts)}
+                          />
+                        </div>
+                      )}
 
-                {/* Show Accounts only when expanded */}
-                {expandedCategories[category] && (
-                  <div className="ms-4">
-                    {accounts.map((account, idx) => {
-                      const accountName =
-                        typeof account === "object" ? account.name : account;
-
-                      return (
-                        <Form.Check
-                          className="ms-4 mb-2"
-                          key={idx}
-                          type="checkbox"
-                          label={accountName}
-                          checked={localSelected.includes(accountName)}
-                          onChange={() => toggleAccountSelection(accountName)}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                      {/* Account List */}
+                      {expandedCategories[category] && (
+                        <div className="ms-4">
+                          {accounts.map((account, idx) => {
+                            const accountName = typeof account === "object" ? account.name : account;
+                            return (
+                              <Form.Check
+                                className="ms-4 mb-2"
+                                key={idx}
+                                type="checkbox"
+                                label={accountName}
+                                checked={localSelected.includes(accountName)}
+                                onChange={() => toggleAccountSelection(accountName)}
+                              />
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-muted">No accounts found.</p>
+              )}
+            </div>
+          </>
+        )}
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="primary" onClick={() => onUpdate(localSelected)}>
+        <Button variant="primary" onClick={() => onUpdate(localSelected)} disabled={loading || !!error}>
           Update
         </Button>
         <Button variant="secondary" onClick={handleClose}>

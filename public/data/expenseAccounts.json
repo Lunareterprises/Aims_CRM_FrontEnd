@@ -1,0 +1,32 @@
+[
+    {
+      "Cost Of Goods Sold": [
+        "Cost of Goods Sold",
+        "Job Costing",
+        "Labor",
+        "Materials",
+        "Subcontractor",
+        "Tea"
+      ]
+    },
+    {
+      "Expense": [
+        { "name": "Advertising and Marketing" },
+        "Automobile Expense",
+        "Bad Debt",
+        "Bank Fees and Charges",
+        "Consultant Expense",
+        "Depreciation Expense",
+        "IT and Internet Expenses",
+        "Meals and Entertainment",
+        "Office Supplies",
+        "Rent Expense",
+        "Salaries and Employee Wages",
+        "Travel Expense"
+      ]
+    },
+    {
+      "Other Expense": ["Exchange Gain or Loss"]
+    }
+  ]
+  

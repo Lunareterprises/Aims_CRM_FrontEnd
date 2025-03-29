@@ -1,22 +1,34 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form, Spinner, Alert } from "react-bootstrap";
 
 function LiabilityAccountModal({ show, handleClose, onUpdate }) {
+  const [liabilities, setLiabilities] = useState({});
   const [localSelected, setLocalSelected] = useState([]);
   const [expandedCategories, setExpandedCategories] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const AssetsAccounts = [
-    {
-      "Liabilities": {
-        "Current Liabilities": ["Accounts Payable ", "Employee Reimbursements", "GEETHA KUMARI ","Opening Balance Adjustments ", "Tax Payable","TDS Payable ","Unearned Revenue"],
-        "Long Term Liabilities": ["Construction Loans", "Mortgages "],
-        "Other Liabilities": []
+  // Fetch liability accounts from JSON file
+  useEffect(() => {
+    const fetchLiabilities = async () => {
+      try {
+        const response = await fetch("/data/liabilities.json"); // Adjust path if necessary
+        if (!response.ok) throw new Error("Failed to fetch data");
+
+        const data = await response.json();
+        setLiabilities(data.Liabilities || {});
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    },
-    
-  ];
+    };
 
+    fetchLiabilities();
+  }, []);
+
+  // Toggle category expansion
   const toggleCategory = (category) => {
     setExpandedCategories((prev) => ({
       ...prev,
@@ -24,6 +36,7 @@ function LiabilityAccountModal({ show, handleClose, onUpdate }) {
     }));
   };
 
+  // Toggle selection of an account
   const toggleAccountSelection = (account) => {
     setLocalSelected((prev) =>
       prev.includes(account)
@@ -32,11 +45,20 @@ function LiabilityAccountModal({ show, handleClose, onUpdate }) {
     );
   };
 
-  const filterAccounts = (accounts) => {
-    return accounts.filter((account) =>
-      account.toLowerCase().includes(searchTerm.toLowerCase())
+  // Select or unselect all accounts within a category
+  const handleSelectAll = (accounts, isSelected) => {
+    setLocalSelected((prev) =>
+      isSelected
+        ? prev.filter((item) => !accounts.includes(item)) // Unselect all
+        : [...new Set([...prev, ...accounts])] // Select all
     );
   };
+
+  // Filter accounts based on search term
+  const filterAccounts = (accounts) =>
+    accounts?.filter((account) =>
+      account.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
@@ -52,66 +74,120 @@ function LiabilityAccountModal({ show, handleClose, onUpdate }) {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <div className="text-primary fs-5 mb-2">Liability Accounts</div>
+        {loading && <Spinner animation="border" />}
+        {error && <Alert variant="danger">{error}</Alert>}
+
+        {!loading && !error && (
+          <div className="text-primary fs-5 mb-2">Liability Accounts</div>
+        )}
+
         <div className="ms-3">
-          {AssetsAccounts.map((categoryObj, index) => {
-            const category = Object.keys(categoryObj)[0];
-            const accounts = categoryObj[category];
+          {!loading &&
+            !error &&
+            Object.entries(liabilities).map(([category, subCategories], index) => {
+              const allMainAccounts = typeof subCategories === "object" && !Array.isArray(subCategories)
+                ? Object.values(subCategories).flat()
+                : subCategories;
+              const filteredMainAccounts = filterAccounts(allMainAccounts);
+              const allSelected = filteredMainAccounts.every((acc) => localSelected.includes(acc));
+              const someSelected = filteredMainAccounts.some((acc) => localSelected.includes(acc));
 
-            return (
-              <div key={index}>
-                <div
-                  className="d-flex align-items-center text-primary gap-2 fs-6"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => toggleCategory(category)}
-                >
-                  {expandedCategories[category] ? "-" : "+"} {category}
-                </div>
-
-                {expandedCategories[category] && (
-                  <div className="ms-4">
-                    {typeof accounts === "object" && !Array.isArray(accounts)
-                      ? Object.entries(accounts).map(([subCategory, subAccounts], subIndex) => (
-                          <div key={`${index}-${subIndex}`} className="ms-3">
-                            <div
-                              className="text-secondary fs-6"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => toggleCategory(subCategory)}
-                            >
-                              {expandedCategories[subCategory] ? "-" : "+"} {subCategory}
-                            </div>
-
-                            {expandedCategories[subCategory] && (
-                              <div className="ms-4">
-                                {filterAccounts(subAccounts).map((account, idx) => (
-                                  <Form.Check
-                                    className="ms-3 mb-2"
-                                    key={idx}
-                                    type="checkbox"
-                                    label={account}
-                                    checked={localSelected.includes(account)}
-                                    onChange={() => toggleAccountSelection(account)}
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))
-                      : filterAccounts(accounts).map((account, idx) => (
-                          <Form.Check
-                            className="ms-3 mb-2"
-                            key={idx}
-                            type="checkbox"
-                            label={account}
-                            checked={localSelected.includes(account)}
-                            onChange={() => toggleAccountSelection(account)}
-                          />
-                        ))}
+              return (
+                <div key={index}>
+                  {/* Main Category Toggle */}
+                  <div
+                    className="d-flex align-items-center text-primary gap-2 fs-6"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => toggleCategory(category)}
+                  >
+                    {expandedCategories[category] ? "−" : "+"} {category}
                   </div>
-                )}
-              </div>
-            );
-          })}
+
+                  {/* Select/Unselect All Checkbox for Main Category */}
+                  {expandedCategories[category] && filteredMainAccounts.length > 0 && (
+                    <div className="ms-4 mt-2">
+                      <Form.Check
+                        className="mb-2"
+                        type="checkbox"
+                        label="Select All"
+                        checked={allSelected}
+                        ref={(input) => {
+                          if (input) input.indeterminate = someSelected && !allSelected;
+                        }}
+                        onChange={() => handleSelectAll(filteredMainAccounts, allSelected)}
+                      />
+                    </div>
+                  )}
+
+                  {/* Subcategories or direct accounts */}
+                  {expandedCategories[category] && (
+                    <div className="ms-4">
+                      {typeof subCategories === "object" && !Array.isArray(subCategories)
+                        ? Object.entries(subCategories).map(([subCategory, accounts], subIndex) => {
+                            const filteredAccounts = filterAccounts(accounts);
+                            const allSubSelected = filteredAccounts.every((acc) => localSelected.includes(acc));
+                            const someSubSelected = filteredAccounts.some((acc) => localSelected.includes(acc));
+
+                            return (
+                              <div key={subIndex} className="ms-3">
+                                {/* Subcategory Toggle */}
+                                <div
+                                  className="text-secondary fs-6"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => toggleCategory(subCategory)}
+                                >
+                                  {expandedCategories[subCategory] ? "−" : "+"} {subCategory}
+                                </div>
+
+                                {/* Select/Unselect All Checkbox for Subcategory */}
+                                {expandedCategories[subCategory] && filteredAccounts.length > 0 && (
+                                  <div className="ms-4 mt-2">
+                                    <Form.Check
+                                      className="mb-2"
+                                      type="checkbox"
+                                      label="Select All"
+                                      checked={allSubSelected}
+                                      ref={(input) => {
+                                        if (input) input.indeterminate = someSubSelected && !allSubSelected;
+                                      }}
+                                      onChange={() => handleSelectAll(filteredAccounts, allSubSelected)}
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Accounts under Subcategory */}
+                                {expandedCategories[subCategory] && (
+                                  <div className="ms-4">
+                                    {filteredAccounts.map((account, idx) => (
+                                      <Form.Check
+                                        className="ms-3 mb-2"
+                                        key={idx}
+                                        type="checkbox"
+                                        label={account}
+                                        checked={localSelected.includes(account)}
+                                        onChange={() => toggleAccountSelection(account)}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })
+                        : filteredMainAccounts.map((account, idx) => (
+                            <Form.Check
+                              className="ms-3 mb-2"
+                              key={idx}
+                              type="checkbox"
+                              label={account}
+                              checked={localSelected.includes(account)}
+                              onChange={() => toggleAccountSelection(account)}
+                            />
+                          ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </Modal.Body>
       <Modal.Footer>
@@ -127,4 +203,3 @@ function LiabilityAccountModal({ show, handleClose, onUpdate }) {
 }
 
 export default LiabilityAccountModal;
-
