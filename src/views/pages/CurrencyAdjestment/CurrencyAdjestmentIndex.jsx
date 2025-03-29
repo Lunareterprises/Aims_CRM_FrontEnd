@@ -4,6 +4,8 @@ import { FaFilePdf } from "react-icons/fa";
 import AdjustmentModal from "./AdjustmentModal"; 
 import "./CurrencyAdjestments.css";
 
+
+
 const defaultAccounts = [
   {
     code: "JNL001",
