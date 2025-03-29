@@ -99,8 +99,8 @@ const CurrencyAdjestmentIndex = ({ accounts = defaultAccounts }) => {
                 <td>{account.journal || "-"}</td>
                 <td>{account.reference || "-"}</td>
                 <td>{account.status || "-"}</td>
-                <td style={{ cursor: "pointer", color: "blue" }} >
-                  <FaFilePdf size={18} style={{ marginRight: "5px", color: "red" }} />
+                <td style={{ cursor: "pointer", color: "blue" }} >{account.status || "-"}
+                  {/* <FaFilePdf size={18} style={{ marginRight: "5px", color: "red" }} /> */}
                 </td>
               </tr>
             ))
