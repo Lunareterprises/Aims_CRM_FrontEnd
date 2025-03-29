@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
+import { FaFilePdf } from "react-icons/fa"; 
+import JournalModal from "./JournalModal"; 
 import "../Accountants/Accountants.css";
 
-// Default data
 const defaultAccounts = [
   {
     code: "JNL001",
@@ -27,16 +28,16 @@ const defaultAccounts = [
   },
 ];
 
-const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue here
+const ManualJournals = ({ accounts = defaultAccounts }) => {
   const navigate = useNavigate();
-  const [hover, setHover] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSelectAll = () => {
-    const newSelectAll = !selectAll;
-    setSelectAll(newSelectAll);
-    setSelectedItems(newSelectAll ? accounts.map((account) => account.code) : []);
+    setSelectAll(!selectAll);
+    setSelectedItems(selectAll ? [] : accounts.map((account) => account.code));
   };
 
   const handleSelectItem = (code) => {
@@ -45,44 +46,30 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue
     );
   };
 
+  const handleShowModal = (account) => {
+    setSelectedNote(account);  
+    setShowModal(true);
+  };
+
   return (
     <Container fluid className="py-3">
       <Row className="align-items-center mb-3">
-        <Col xs={12} md={6} className="d-flex align-items-center">
-          <h5 className="mb-0 me-2">Manual Journals</h5>
+        <Col xs={12} md={6}>
+          <h5 className="mb-0">Manual Journals</h5>
         </Col>
         <Col xs={12} md={6} className="text-md-end mt-3 mt-md-0">
-          <Button variant="primary" className="me-2" onClick={() => navigate("/dashboard/AddNewManualJournals")}>
+          <Button variant="primary" onClick={() => navigate("/dashboard/AddNewManualJournals")}>
             + New Account
-          </Button>
-          <Button
-            variant="outline-secondary"
-            style={{
-              fontSize: "18px",
-              width: "auto",
-              padding: "2px 8px",
-              minWidth: "unset",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: hover ? "#acacac" : "transparent",
-              color: hover ? "black" : "white",
-            }}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-          >
-            ⋮
           </Button>
         </Col>
       </Row>
       <hr />
-
-      {/* Filters */}
-      <Row className="align-items-center mb-3">
-        <Col xs={12} md={1}>
+{/* Filters */}
+      <Row className="d-flex align-items-center mb-3">
+        <Col xs="auto">
           <h6 className="mb-0">View By</h6>
         </Col>
-        <Col xs={12} md={2}>
+        <Col xs="auto" className="d-flex align-items-center">
           <h6 className="mb-0 me-2">Status:</h6>
           <Form.Select size="sm">
             <option>All</option>
@@ -90,7 +77,7 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue
             <option>Draft</option>
           </Form.Select>
         </Col>
-        <Col xs={12} md={2}>
+        <Col xs="auto" className="d-flex align-items-center">
           <h6 className="mb-0 me-2">Period:</h6>
           <Form.Select size="sm">
             <option>All</option>
@@ -105,8 +92,7 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue
 
       {/* Table */}
       <Table bordered hover responsive>
-      <thead className="table-light text-center">
-
+        <thead className="table-light text-center">
           <tr>
             <th>
               <Form.Check type="checkbox" checked={selectAll} onChange={handleSelectAll} />
@@ -135,7 +121,13 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue
                 <td>{account.journal || "-"}</td>
                 <td>{account.reference || "-"}</td>
                 <td>{account.status || "-"}</td>
-                <td>{account.notes || "-"}</td>
+                <td 
+                  style={{ cursor: "pointer", color: "blue" }} 
+                  onClick={() => handleShowModal(account)} 
+                >
+                  <FaFilePdf size={18} style={{ marginRight: "5px", color: "red" }} />
+                  
+                </td>
                 <td>{account.amount || "-"}</td>
                 <td>{account.createdBy || "-"}</td>
               </tr>
@@ -149,6 +141,8 @@ const ManualJournals = ({ accounts = defaultAccounts }) => {  // Fixed the issue
           )}
         </tbody>
       </Table>
+
+      <JournalModal showModal={showModal} setShowModal={setShowModal} selectedNote={selectedNote} />
     </Container>
   );
 };

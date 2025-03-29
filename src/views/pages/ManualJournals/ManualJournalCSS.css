@@ -54,3 +54,82 @@
     z-index: 10; /* Ensures it stays above other content */
   }
   
+
+
+
+
+  
+  .modal-header-custom {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  .modal-title-custom {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .modal-body-custom {
+    padding: 20px;
+  }
+  
+  .journal-title {
+    text-align: start;
+    font-weight:lighter;
+    font-size: 2rem;
+    color: #07478b;
+    margin-bottom: 10px;
+  }
+  
+  .journal-info p {
+    font-size: 1rem;
+    margin: 10px 0;
+    text-align: start;
+    gap: 10px;
+  }
+  
+  .journal-table {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .journal-table th, .journal-table td {
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .modal-footer-custom {
+    display: flex;
+    justify-content: end;
+    padding: 15px;
+  }
+  
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    font-weight: bold;
+    color: #939394;
+    background: none;
+    cursor: pointer;
+  }
+  
+  /* .icon-btn:hover {
+    color: #0056b3;
+  } */
+  .journal-table thead  tr th{
+    background-color: #212631 !important;
+    color: white !important;
+  }
+  .journal-table   tr td{
+    color: #212631 !important;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+  

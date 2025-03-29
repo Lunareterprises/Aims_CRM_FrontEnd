@@ -1,0 +1,6 @@
+.currency-dropdown select {
+    max-height: 200px;
+    overflow-y: auto;
+    
+  }
+  

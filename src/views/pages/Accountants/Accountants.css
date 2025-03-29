@@ -19,4 +19,35 @@ body {
       text-align: left !important;
     }
   }
+
+  .tooltip-box {
+    background: #343a40; /* Dark background */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+ 
+    margin-top: 50px;
+    transform: translateY(-50%);
+    width: 220px;
+    white-space: normal;
+  }
+  
+  .tooltip-box::after {
+    content: "";
+    position: absolute;
+    top: 20%; /* Move arrow down a bit */
+    right: 100%; /* Align arrow to the left */
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #343a40 transparent transparent; /* Triangle pointing left */
+  }
+  
+  
+  
+  
   

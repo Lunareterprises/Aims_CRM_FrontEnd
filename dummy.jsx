@@ -1,236 +1,167 @@
-import React, { useState, useEffect } from "react";
-import { Container, Form, Row, Col, Button, Table, Dropdown } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Table, Button, Form, Modal } from "react-bootstrap";
+import { FaFilePdf } from "react-icons/fa"; // Importing PDF icon
+import "../Accountants/Accountants.css";
 
-function AddNewManualJournals() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const defaultAccounts = [
+  {
+    code: "JNL001",
+    date: "2024-03-25",
+    journal: "Sales Journal",
+    reference: "REF12345",
+    status: "Published",
+    notes: "Sales entry for March",
+    amount: "₹10,000",
+    createdBy: "Admin",
+  },
+  {
+    code: "JNL002",
+    date: "2024-03-20",
+    journal: "Expense Journal",
+    reference: "REF67890",
+    status: "Draft",
+    notes: "Office rent payment",
+    amount: "₹5,000",
+    createdBy: "John Doe",
+  },
+];
 
-  const [accounts, setAccounts] = useState([]);
-  const [contacts, setContacts] = useState({});
-  const [rows, setRows] = useState([
-    { id: 1, account: "", description: "", contact: "", debits: "", credits: "", showOptions: false }
-  ]);
-  const [isRecurring, setIsRecurring] = useState(false);
+const ManualJournals = ({ accounts = defaultAccounts }) => {
+  const navigate = useNavigate();
+  const [hover, setHover] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
 
-  // Fetch Accounts from API
-  useEffect(() => {
-    axios.get("/api/accounts")
-      .then((response) => {
-        console.log("API Response:", response);
-        if (Array.isArray(response.data)) {
-          setAccounts(response.data);
-        } else {
-          console.error("Unexpected API response format:", response.data);
-          setAccounts([]); // Set empty array to prevent mapping error
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching accounts:", error);
-        setAccounts([]); // Ensure accounts is always an array
-      });
-  }, []);
-  
-  // Fetch Contacts based on selected account
-  const handleAccountChange = (index, accountId) => {
-    axios.get(`/api/contacts?accountId=${accountId}`).then((response) => {
-      setContacts((prev) => ({ ...prev, [accountId]: response.data }));
-    }).catch((error) => console.error("Error fetching contacts:", error));
-
-    const updatedRows = [...rows];
-    updatedRows[index].account = accountId;
-    updatedRows[index].contact = ""; // Reset contact when account changes
-    setRows(updatedRows);
+  const handleSelectAll = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+    setSelectedItems(newSelectAll ? accounts.map((account) => account.code) : []);
   };
 
-  // Handle row updates
-  const handleInputChange = (index, field, value) => {
-    const updatedRows = [...rows];
-    updatedRows[index][field] = value;
-    setRows(updatedRows);
+  const handleSelectItem = (code) => {
+    setSelectedItems((prev) =>
+      prev.includes(code) ? prev.filter((item) => item !== code) : [...prev, code]
+    );
   };
 
-  // Toggle additional options dropdown
-  const toggleOptions = (index) => {
-    const updatedRows = [...rows];
-    updatedRows[index].showOptions = !updatedRows[index].showOptions;
-    setRows(updatedRows);
+  const handleShowModal = (note) => {
+    setSelectedNote(note);
+    setShowModal(true);
   };
 
-  // Add new row
-  const addRow = () => {
-    setRows([...rows, { id: rows.length + 1, account: "", description: "", contact: "", debits: "", credits: "", showOptions: false }]);
+  const handlePrint = () => {
+    window.print();
   };
 
-  // Remove a row
-  const removeRow = (index) => {
-    setRows(rows.filter((_, i) => i !== index));
-  };
-
-  // Handle form submission
-  const onSubmit = (data) => {
-    console.log("Form Data:", data, "Table Rows:", rows);
-  };
-console.log("accounts :==========>> ",accounts)
   return (
-    <Container>
-      <h3 className="my-4">Add New Manual Journal</h3>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        
-        {/* Date & Journal# */}
-        <Row className="mb-3">
-          <Col md={2}><Form.Label className="fw-medium text-danger">Date*</Form.Label></Col>
-          <Col md={4}>
-            <Form.Control type="date" {...register("date", { required: true })} />
-            {errors.date && <small className="text-danger">Date is required</small>}
-          </Col>
-        </Row>
+    <Container fluid className="py-3">
+      <Row className="align-items-center mb-3">
+        <Col xs={12} md={6} className="d-flex align-items-center">
+          <h5 className="mb-0 me-2">Manual Journals</h5>
+        </Col>
+        <Col xs={12} md={6} className="text-md-end mt-3 mt-md-0">
+          <Button variant="primary" className="me-2" onClick={() => navigate("/dashboard/AddNewManualJournals")}>
+            + New Account
+          </Button>
+          <Button
+            variant="outline-secondary"
+            style={{
+              fontSize: "18px",
+              width: "auto",
+              padding: "2px 8px",
+              minWidth: "unset",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: hover ? "#acacac" : "transparent",
+              color: hover ? "black" : "white",
+            }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
+            ⋮
+          </Button>
+        </Col>
+      </Row>
+      <hr />
 
-        <Row className="mb-3">
-          <Col md={2}><Form.Label className="fw-medium text-danger">Journal#*</Form.Label></Col>
-          <Col md={4}>
-            <Form.Control type="number" {...register("journalNumber", { required: true })} />
-            {errors.journalNumber && <small className="text-danger">Journal# is required</small>}
-          </Col>
-        </Row>
-
-        {/* Journal Table */}
-        <Table striped bordered hover>
-          <thead>
+      {/* Table */}
+        <Table bordered hover responsive>
+          <thead className="table-light text-center">
             <tr>
-              <th>Account</th>
-              <th>Description</th>
-              <th>Contact</th>
-              <th>Debits</th>
-              <th>Credits</th>
-              <th>Options</th>
-              <th>Action</th>
+              <th>
+                <Form.Check type="checkbox" checked={selectAll} onChange={handleSelectAll} />
+              </th>
+              <th>Date</th>
+              <th>Journal</th>
+              <th>Reference Number</th>
+              <th>Status</th>
+              <th>Notes</th>
+              <th>Amount</th>
+              <th>Created By</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
-              <tr key={row.id}>
-                {/* Account Dropdown */}
-                <td>
-                <Form.Select
-                    value={row.account}
-                    onChange={(e) => handleAccountChange(index, e.target.value)}
-                    >
-                    <option value="">Select Account</option>
-                    {Array.isArray(accounts) && accounts.length > 0 ? (
-                        accounts.map((account) => (
-                        <option key={account.id} value={account.id}>
-                            {account.name}
-                        </option>
-                        ))
-                    ) : (
-                        <option disabled>No Accounts Available</option>
-                    )}
-                </Form.Select>
-
-                </td>
-
-                {/* Description */}
-                <td>
-                  <Form.Control
-                    type="text"
-                    value={row.description}
-                    onChange={(e) => handleInputChange(index, "description", e.target.value)}
-                  />
-                </td>
-
-                {/* Contact Dropdown (Enabled based on Account) */}
-                <td>
-                  <Form.Select
-                    disabled={!row.account}
-                    value={row.contact}
-                    onChange={(e) => handleInputChange(index, "contact", e.target.value)}
+            {accounts.length > 0 ? (
+              accounts.map((account) => (
+                <tr key={account.code}>
+                  <td>
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectedItems.includes(account.code)}
+                      onChange={() => handleSelectItem(account.code)}
+                    />
+                  </td>
+                  <td>{account.date || "-"}</td>
+                  <td>{account.journal || "-"}</td>
+                  <td>{account.reference || "-"}</td>
+                  <td>{account.status || "-"}</td>
+                  <td 
+                    style={{ cursor: "pointer", color: "blue" }} 
+                    onClick={() => handleShowModal(account.notes)}
                   >
-                    <option value="">Select Contact</option>
-                    {(contacts[row.account] || []).map((contact) => (
-                      <option key={contact.id} value={contact.id}>{contact.name}</option>
-                    ))}
-                  </Form.Select>
-                </td>
-
-                {/* Debits & Credits */}
-                <td>
-                  <Form.Control
-                    type="number"
-                    step="0.01"
-                    value={row.debits}
-                    onChange={(e) => handleInputChange(index, "debits", e.target.value)}
-                  />
-                </td>
-                <td>
-                  <Form.Control
-                    type="number"
-                    step="0.01"
-                    value={row.credits}
-                    onChange={(e) => handleInputChange(index, "credits", e.target.value)}
-                  />
-                </td>
-
-                {/* Three Dots Menu */}
-                <td>
-                  <Button variant="light" onClick={() => toggleOptions(index)}>⋮</Button>
-                  {row.showOptions && (
-                    <Dropdown.Menu show>
-                      <Dropdown.Item>Option 1</Dropdown.Item>
-                      <Dropdown.Item>Option 2</Dropdown.Item>
-                    </Dropdown.Menu>
-                  )}
-                </td>
-
-                {/* Remove Row */}
-                <td>
-                  {rows.length > 1 && (
-                    <Button variant="danger" onClick={() => removeRow(index)}>X</Button>
-                  )}
+                    <FaFilePdf size={18} style={{ marginRight: "5px", color: "red" }} />
+                    {account.notes || "-"}
+                  </td>
+                  <td>{account.amount || "-"}</td>
+                  <td>{account.createdBy || "-"}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  No accounts available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </Table>
 
-        {/* Add Row Button */}
-        <Button variant="success" className="mb-3" onClick={addRow}>+ Add Row</Button>
-
-        {/* File Attachments */}
-        {!isRecurring && (
-          <Row className="mb-3">
-            <Col md={3}><Form.Label>Attachments</Form.Label></Col>
-            <Col md={9}>
-              <Form.Control type="file" multiple {...register("attachments")} />
-              <small className="text-muted">Max 5 files, 10MB each</small>
-            </Col>
-          </Row>
-        )}
-
-        {/* Submit Buttons */}
-        <Row>
-          <Col>
-            {!isRecurring ? (
-              <>
-                <Button type="submit" variant="primary">Save & Publish</Button>{" "}
-                <Button variant="secondary">Save as Draft</Button>{" "}
-                <Button variant="danger">Cancel</Button>
-              </>
-            ) : (
-              <>
-                <Button type="submit" variant="primary">Save</Button>{" "}
-                <Button variant="danger">Cancel</Button>
-              </>
-            )}
-          </Col>
-        </Row>
-      </Form>
+        {/* Modal */}
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Print Preview</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div id="printableArea">
+              <h4>Journal Note</h4>
+              <p>{selectedNote}</p>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handlePrint}>
+              Print
+            </Button>
+          </Modal.Footer>
+        </Modal>
     </Container>
   );
-}
+};
 
-export default AddNewManualJournals;
+export default ManualJournals;
