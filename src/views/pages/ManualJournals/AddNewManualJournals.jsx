@@ -158,9 +158,9 @@ function AddNewManualJournals() {
 
   return (
         <Container>
-          <h3 className="my-4">
+        <h3 className="my-4">
         {isEditing ? "Edit Journal" : isRecurring ? "New Recurring Journal" : "New Journal"}
-      </h3>
+        </h3>
           <Form onSubmit={handleSubmit(onSubmit)} >
 
                   {/* Date & Journal# */}
@@ -425,11 +425,6 @@ function AddNewManualJournals() {
           </Table>
         </div>
 
-
-
-
-               
-        
                 {/* File Attachments */}
                 {!isRecurring && (
                   <Col className="mb-3">
@@ -461,9 +456,6 @@ function AddNewManualJournals() {
                   </Col>
                 )}
 
-
-        
-        
                 {/* Submit Buttons */}
                 <Row className="d-flex justify-content-end align-items-center sticky-footer">
                   <Col className="d-flex gap-2">
@@ -496,8 +488,6 @@ function AddNewManualJournals() {
                     </Button>
                   </Col>
                 </Row>
-
-
       </Form>
     </Container>
   );

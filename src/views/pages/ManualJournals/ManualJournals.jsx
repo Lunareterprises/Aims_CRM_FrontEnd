@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { FaFilePdf } from "react-icons/fa"; 
-import JournalModal from "./JournalModal"; // Import the modal component
+import JournalModal from "./JournalModal"; 
 import "../Accountants/Accountants.css";
 
-// Default data
 const defaultAccounts = [
   {
     code: "JNL001",

@@ -133,6 +133,8 @@ const Timesheet = React.lazy(() => import('./views/pages/TimeTracking/Timesheet'
 const Report = React.lazy(() => import('./views/pages/Report/Report'))
 const ManualJournals = React.lazy(() => import('./views/pages/ManualJournals/ManualJournals'))
 const CurrencyAdjestment = React.lazy(() => import('./views/pages/CurrencyAdjestment/CurrencyAdjestmentIndex'))
+const Budgets = React.lazy(() => import('./views/pages/Budgets/BudgetsIndex'))
+const NewBudget = React.lazy(() => import('./views/pages/Budgets/NewBudget'))
 const AddNewManualJournals = React.lazy(() => import('./views/pages/ManualJournals/AddNewManualJournals'))
 const Accountants = React.lazy(() => import('./views/pages/Accountants/Accountants'))
 
@@ -438,6 +440,18 @@ const routes = [
     path: '/dashboard/CurrencyAdjestment',
     name: t('CurrencyAdjestment'),
     element: CurrencyAdjestment,
+    exact: true,
+  },
+    {
+    path: '/dashboard/Budgets',
+    name: t('Budgets'),
+    element: Budgets,
+    exact: true,
+  },
+  {
+    path: '/dashboard/NewBudget',
+    name: t('NewBudget'),
+    element: NewBudget,
     exact: true,
   },
   {
