@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import { FaFilePdf } from "react-icons/fa"; 
-import AdjustmentModal from "./AdjustmentModal"; // Import the modal component
+import AdjustmentModal from "./AdjustmentModal"; 
 import "./CurrencyAdjestments.css";
 
 const defaultAccounts = [
