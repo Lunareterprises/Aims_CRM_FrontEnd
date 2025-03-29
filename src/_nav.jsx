@@ -215,11 +215,11 @@ const _nav = [
         name: 'Currency Adjestment',
         to: '/dashboard/CurrencyAdjestment',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Budgets',
-      //   to: '/dashboard/Budgets',
-      // },
+      {
+        component: CNavItem,
+        name: 'Budgets',
+        to: '/dashboard/Budgets',
+      },
      
     ],
   },
